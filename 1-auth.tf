@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket  = "jenkins-lab-bucket"         # your S3 bucket
+    bucket  = "jenkins-lab-bucket-435830281557-us-east-1-an"         # your S3 bucket
     key     = "jenkins/terraform.tfstate" # path inside the bucket
     region  = "us-east-1"
     encrypt = true
