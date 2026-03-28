@@ -1,3 +1,5 @@
+# Terraform backend configuration and AWS provider setup for Jenkins lab environment.
+
 terraform {
   required_providers {
     aws = {
