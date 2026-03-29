@@ -26,3 +26,33 @@ resource "aws_s3_object" "screengrabs" {
   key      = "screengrabs/${each.value}"
   source   = "${path.module}/screengrabs/${each.value}"
 }
+
+resource "aws_s3_bucket_public_access_block" "Jenkins_Bucket_Public_Access_Block" {
+  bucket = aws_s3_bucket.Jenkins_Bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = false
+  ignore_public_acls      = true
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_policy" "Jenkins_Bucket_Policy" {
+  bucket = aws_s3_bucket.Jenkins_Bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = "*"
+        Action = [
+          "s3:GetObject"
+        ]
+        Resource = ["${aws_s3_bucket.Jenkins_Bucket.arn}/armageddon-evidence/*", "${aws_s3_bucket.Jenkins_Bucket.arn}/screengrabs/*"]
+      }
+    ]
+  })
+
+  depends_on = [aws_s3_bucket_public_access_block.Jenkins_Bucket_Public_Access_Block]
+
+}
