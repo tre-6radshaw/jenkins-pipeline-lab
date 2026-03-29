@@ -19,3 +19,10 @@ resource "aws_s3_object" "Armageddon_Repo_Link" {
   key    = "armageddon-evidence/armageddon-link.txt"
   source = "${path.module}/armageddon-evidence/armageddon-link.txt"
 }
+
+resource "aws_s3_object" "screengrabs" {
+  for_each = fileset("${path.module}/screengrabs", "*")
+  bucket   = aws_s3_bucket.Jenkins_Bucket.id
+  key      = "screengrabs/${each.value}"
+  source   = "${path.module}/screengrabs/${each.value}"
+}
